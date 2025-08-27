@@ -14,6 +14,8 @@
     - dood: devcontainer の中でローカルのdockerを使うための設定
 - ghcr.io/devcontainers/features/github-cli:バージョン
     - git: devcontainer の中でgitを使うための設定
+- ghcr.io/devcontainers/features/git-lfs:バージョン
+    - git-lfs: devcontainer の中でgit-lfsを使うための設定
 ### service
 - docker composeサービス名
 ### workspaceFolder

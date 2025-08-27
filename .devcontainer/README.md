@@ -14,6 +14,8 @@
     - dood: devcontainer 안에서 로컬의 docker를 사용하기 위한 세팅
 - ghcr.io/devcontainers/features/github-cli:버전
     - git: devcontainer 안에서 git을 사용하기 위한 세팅
+- ghcr.io/devcontainers/features/git-lfs:버전
+    - git-lfs: devcontainer 안에서 git-lfs를 사용하기 위한 세팅
 ### service
 - docker compose의 서비스명
 ### workspaceFolder
