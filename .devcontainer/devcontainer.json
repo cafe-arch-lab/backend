@@ -19,18 +19,7 @@
         "cweijan.vscode-database-client2",
         "streetsidesoftware.code-spell-checker",
         "editorconfig.editorconfig"
-      ],
-      "settings": {
-        "files.associations": {
-          "*.json.golden": "json"
-        },
-        "go.lintTool": "golangci-lint",
-        "go.lintFlags": ["--fast"],
-        "go.lintOnSave": "package",
-        "gopls": {
-          "buildFlags": ["-tags=wireinject"]
-        }
-      }
+      ]
     }
   },
 
