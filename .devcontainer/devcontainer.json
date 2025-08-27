@@ -3,7 +3,8 @@
   "dockerComposeFile": "./compose.yml",
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/git-lfs:1": {}
   },
   "service": "api",
   "workspaceFolder": "/api",
