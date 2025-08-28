@@ -1,0 +1,17 @@
+root = "."
+
+[misc]
+clean_on_exit = true
+
+[build]
+cmd = "bash -lc 'true'"
+
+full_bin = "bash -lc 'PORT=${PORT:-8080} go run ./cmd/api/main.go'"
+
+send_interrupt = true
+send_interrupt_delay = 300
+kill_signal = "SIGKILL"
+delay = 100
+
+include_ext = ["go","mod","sum","env"]
+exclude_dir = [".git","vendor",".devcontainer"]
