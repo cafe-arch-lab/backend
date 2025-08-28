@@ -34,5 +34,6 @@
     "HOST_ROOT_PATH": "${localWorkspaceFolder}"
   },
 
+  "postCreateCommand": "bash -lc 'chmod +x .devcontainer/install.sh && .devcontainer/install.sh'",
   "shutdownAction": "stopCompose"
 }
