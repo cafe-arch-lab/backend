@@ -10,7 +10,7 @@ fi
 echo "[install] start"
 
 # install psmisc
-apt-get update && apt-get install -y psmisc
+apt-get update && apt-get install -y psmisc 
 
 # install air
 go install github.com/air-verse/air@latest
