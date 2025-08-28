@@ -6,10 +6,17 @@
 
 # 環境
 - [echo](https://echo.labstack.com/)
+    - framework
 - [gorm](https://gorm.io/index.html)
+    - orm
 - [postgresql](https://www.postgresql.org/)
+    - db
 - [Hurl](https://hurl.dev/)
+    - test tools
 - [devcontainer](https://containers.dev/)
+    - 開発環境
+- [air](https://github.com/air-verse/air)
+    - コード修正し、自動サーバー再実行
 
 # アーキテクチャ
 - dddと vsaを結合した方法で進行
@@ -20,3 +27,8 @@
 - 開発環境はdevcontainerに想定
 - FEは予定なし
 - コードを作成時、根拠が必要
+
+# 実行
+```
+make run
+```
