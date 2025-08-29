@@ -46,3 +46,9 @@ help: ## Show help (this)
 # ----- Go workflow -----
 run: ## server run
 	air -c .air.toml
+
+lint: ## run linter
+	golangci-lint run
+
+lint-fix: ## run linter with fix option
+	golangci-lint run --fix
