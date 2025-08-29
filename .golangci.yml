@@ -119,17 +119,16 @@ linters:
             #    - gorm.io/driver/mysql
             #    - github.com/aws/aws-sdk-go-v2
 
-exclusions:
-  paths:
-    # 생성물/모의 객체는 기본 제외(필요 시 추가)
-    - ".*_gen\\.go"
-    - ".*mock.*\\.go"
-    - ".*\\.pb\\.go"
-    - ".*\\.pb\\.gw\\.go"
-    - ".*easyjson\\.go"
-    - ".*zz_generated.*\\.go"
-
-  rules:
-  # 테스트 파일에서 과도한 노이즈를 줄이고 싶다면 주석 해제
-  # - path: "_test\\.go"
-  #   linters: [gosec, gocyclo, gocognit, nilnil]
+  exclusions:
+    paths:
+      # 생성물/모의 객체는 기본 제외(필요 시 추가)
+      - ".*_gen\\.go"
+      - ".*mock.*\\.go"
+      - ".*\\.pb\\.go"
+      - ".*\\.pb\\.gw\\.go"
+      - ".*easyjson\\.go"
+      - ".*zz_generated.*\\.go"
+#    rules:
+#    # 테스트 파일에서 과도한 노이즈를 줄이고 싶다면 주석 해제
+#    # - path: "_test\\.go"
+#    #   linters: [gosec, gocyclo, gocognit, nilnil]
