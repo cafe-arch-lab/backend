@@ -1,0 +1,134 @@
+# .golangci.yml — Greenfield(엄격) 기본형
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+  # 0=자동(머신 코어에 맞춤). CI나 로컬 어디서든 안정적으로 동작
+  concurrency: 0
+  # 사용 Go 버전에 맞춰 조정
+  go: "1.25"
+
+issues:
+  # 모든 이슈를 전부 보고(0=무제한)
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  # 그린필드는 전체 코드 검사를 기본으로
+  new: false
+
+# (v2) 포매터는 linters와 분리
+formatters:
+  enable:
+    - gofmt    # 기본 포매터(형식/정렬). --fix로 자동수정
+    - gci      # import 블록 정렬/그룹핑(로컬 모듈 우선 정렬)
+  settings:
+    gofmt:
+      simplify: true
+    gci:
+      sections:
+        - standard
+        - default
+        - prefix(github.com/yourname/yourrepo) # ← 모듈 경로로 교체
+        - blank
+        - dot
+
+linters:
+  # 명시적으로 켤 것만 고름
+  default: none
+  enable:
+    # --- 정확성/버그 탐지 -----------------------------------------------------
+    - govet           # 표준 정적 분석(의심스러운 코드 패턴)
+    - staticcheck     # 광범위 정확성/성능/단순화 체크(gosimple 포함)
+    - errcheck        # 반환 error 미확인/무시 탐지
+    - ineffassign     # 쓰이지 않는 대입 탐지
+    - unparam         # 호출되지 않는/사용되지 않는 매개변수 탐지
+    - goconst         # 반복 리터럴을 상수로 추출 권장
+    - nilnil          # (val,error)가 동시에 nil인 반환 금지
+    - unconvert       # 불필요한 형 변환 제거 권장
+    - bodyclose       # HTTP response Body close 누락 탐지
+    - contextcheck    # context 미전달/오용(특히 외부 I/O 호출) 탐지
+    - durationcheck   # time.Duration 산술/상수 사용 실수 탐지
+    - errname         # 에러 이름 규약(변수: ErrXxx, 타입: XxxError)
+    - errorlint       # errors.Is/As 활용 권장(== 비교/타입단언 지양)
+    - noctx           # net/http 등 컨텍스트 없는 호출 사용 금지
+    - predeclared     # int/string 등 내장 식별자 가리기 금지
+    - rowserrcheck    # database/sql rows.Iter 후 rows.Err() 확인 강제
+    - sqlclosecheck   # database/sql Rows/Stmt/Tx close 누락 탐지
+    - wrapcheck       # 반환 시 에러에 문맥 래핑(fmt.Errorf("%w", err))
+
+    # --- 복잡도/가독성 --------------------------------------------------------
+    - gocritic        # 코딩 안티패턴/스타일/퍼포먼스 권고(태그 기반)
+    - revive          # 유연한 스타일/베스트프랙티스(골린트 대체)
+    - gocyclo         # 순환 복잡도 상한(함수 복잡도 관리)
+    - gocognit        # 인지 복잡도 상한(가독성 관리)
+    - misspell        # 영문 스펠링 체크
+    - nolintlint      # //nolint 남용/사유 누락 방지
+
+    # --- 보안 & 의존성 가드 ---------------------------------------------------
+    - gosec           # 위험 API/취약 패턴(보안) 탐지
+    - depguard        # 허용된 패키지 화이트리스트로 의존성 통제
+    - bidichk         # BiDi 제어문자(보이지 않는 유니코드) 삽입 탐지
+
+  settings:
+    staticcheck:
+      checks: ["all"]
+
+    errcheck:
+      check-type-assertions: true   # err.(T) 등 타입 어설션 결과 확인
+      check-blank: true             # _ = f()로 error 버리는 패턴 금지
+      # 의도적 무시는 헬퍼 함수로 감싸고 그 함수만 제외 권장
+
+    gocritic:
+      enabled-tags: [diagnostic, style, performance]
+      disabled-checks:
+        - hugeParam  # 대형 값 파라미터 경고는 초기엔 보류(오탐/리팩 필요)
+
+    revive:
+      severity: warning
+      rules:
+        - name: exported             # 공개 심볼 주석 요구(경고 레벨로 시작)
+        - name: package-comments     # 패키지 주석 요구(경고 레벨로 시작)
+        - name: cognitive-complexity
+          arguments: [15]            # 함수 인지 복잡도 상한
+        - name: function-result-limit
+          arguments: [3]             # 함수 반환값 개수 상한
+
+    gocyclo:
+      min-complexity: 15             # 순환 복잡도 상한(낮출수록 엄격)
+
+    gocognit:
+      min-complexity: 20             # 인지 복잡도 상한
+
+    misspell:
+      locale: US
+
+    gosec:
+      severity: medium               # 리포트 심각도 기준
+      confidence: medium             # 탐지 신뢰도 기준
+      # 경로 기반으로 특정 규칙 제외를 미세 조정 권장(테스트/툴 만)
+
+    depguard:
+      rules:
+        main:
+          files: ["$all"]
+          allow:
+            - $gostd
+            - github.com/cafe-arch-lab/backend   # ← 로컬 모듈(필요 외부 패키지 추가)
+            - github.com/labstack/echo/v4
+            #    - gorm.io/gorm
+            #    - gorm.io/driver/mysql
+            #    - github.com/aws/aws-sdk-go-v2
+
+  exclusions:
+    paths:
+      # 생성물/모의 객체는 기본 제외(필요 시 추가)
+      - ".*_gen\\.go"
+      - ".*mock.*\\.go"
+      - ".*\\.pb\\.go"
+      - ".*\\.pb\\.gw\\.go"
+      - ".*easyjson\\.go"
+      - ".*zz_generated.*\\.go"
+#    rules:
+#    # 테스트 파일에서 과도한 노이즈를 줄이고 싶다면 주석 해제
+#    # - path: "_test\\.go"
+#    #   linters: [gosec, gocyclo, gocognit, nilnil]
